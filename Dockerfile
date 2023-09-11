@@ -9,7 +9,7 @@ FROM debian:stable-slim as builder
         gawk \
         git \
         libsqlite3-dev \
-        libssl1.1 \
+        libssl3 \
         libzip-dev \
         make \
         openssl \
@@ -42,6 +42,12 @@ FROM debian:stable-slim
         make \
         sbcl \
         unzip \
+      && rm -rf /var/lib/apt/lists/*
+
+  RUN apt-get update \
+      && apt-get install -y \
+        parallel \
+        postgresql-client \
       && rm -rf /var/lib/apt/lists/*
 
   COPY --from=builder /opt/src/pgloader/build/bin/pgloader /usr/local/bin
